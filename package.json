@@ -1,12 +1,20 @@
 {
   "name": "myimathhack",
   "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "myimaths.com hack, straight A homework.",
+  "main": "hack.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: Can't test.\" && exit 1"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/micromaomao/myimathhack.git"
+  },
+  "bugs": {
+    "url": "https://github.com/micromaomao/myimathhack/issues"
+  },
+  "homepage": "https://github.com/micromaomao/myimathhack#readme",
+  "author": "Mao wtm <https://maowtm.org/>",
   "license": "MIT",
   "dependencies": {
     "request": "^2.75.0"
