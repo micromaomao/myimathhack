@@ -11,8 +11,9 @@ randAlter :: (RandomGen g, Integral t) => g -> [(t, t)] -> [Int]
 randAlter rdgen ([]) = []
 randAlter rdgen ((it, total):itleft) = (round (min (toNormalDist it total (nSam :: Double) (nSam2 :: Double)) (fromIntegral total))):(randAlter nrdgen itleft)
   where
-    (nSam, n1rdgen) = random rdgen
-    (nSam2, nrdgen) = random n1rdgen
+    (gen1, gen2) = split rdgen
+    (nSam, _) = random gen1
+    (nSam2, nrdgen) = random gen2
 
 processInput :: Int -> IO ()
 processInput precentage = do
