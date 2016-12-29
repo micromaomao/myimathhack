@@ -56,6 +56,8 @@ request({
     return
   }
   if (icm.statusCode !== 200) {
+    // For easy debugging
+    debugger
     console.log("Sorry, This don't work anymore. Fire a GitHub issue now!")
     process.exit(3)
     return
