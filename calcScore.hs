@@ -2,7 +2,7 @@ import System.Environment
 import System.Random
 
 toNormalDist :: (Integral t, Fractional f, Floating f) => t -> t -> f -> f -> f
-toNormalDist meanScore totalScore u v = nd * (fromIntegral totalScore) / 5 + fromIntegral meanScore where nd = sqrt (((-2) * (log u))) * (cos (2 * pi * v))
+toNormalDist meanScore totalScore u v = nd * (fromIntegral totalScore) * 0.1 + fromIntegral meanScore where nd = sqrt (((-2) * (log u))) * (cos (2 * pi * v))
 
 calc :: (Integral t) => t -> [t] -> [t]
 calc precentage nums = map (\num -> truncate ((fromIntegral num) * (fromIntegral precentage) / (fromIntegral 100))) nums
