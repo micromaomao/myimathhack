@@ -1,18 +1,24 @@
 import System.Environment
 import System.Random
 
+toNormalDist :: (Integral t, Fractional f, Floating f) => t -> t -> f -> f -> f
+toNormalDist meanScore totalScore u v = nd * (fromIntegral totalScore) / 5 + fromIntegral meanScore where nd = sqrt (((-2) * (log u))) * (cos (2 * pi * v))
+
 calc :: (Integral t) => t -> [t] -> [t]
 calc precentage nums = map (\num -> truncate ((fromIntegral num) * (fromIntegral precentage) / (fromIntegral 100))) nums
 
-randAlter :: (RandomGen g, Integral t) => g -> [t] -> [Int]
+randAlter :: (RandomGen g, Integral t) => g -> [(t, t)] -> [Int]
 randAlter rdgen ([]) = []
-randAlter rdgen (it:itleft) = (fromIntegral it + nSam):(randAlter nrdgen itleft) where (nSam, nrdgen) = randomR (-2, 2) rdgen
+randAlter rdgen ((it, total):itleft) = (round (min (toNormalDist it total (nSam :: Double) (nSam2 :: Double)) (fromIntegral total))):(randAlter nrdgen itleft)
+  where
+    (nSam, n1rdgen) = random rdgen
+    (nSam2, nrdgen) = random n1rdgen
 
 processInput :: Int -> IO ()
 processInput precentage = do
   inp <- getLine
   let nums = [read numStr | numStr <- words inp ] :: [Int]
-  let calcRes = calc precentage nums
+  let calcRes = zip (calc precentage nums) nums
   rdgen <- newStdGen
   let alteredRes = randAlter rdgen calcRes
   let res = unwords ( map show alteredRes )
