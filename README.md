@@ -4,7 +4,7 @@
 
 [The code](hack.js) is very short and you can read it through easily.
 
-**Last working update: Sep 29, 2016** Not working? [Starts a issue now](https://github.com/micromaomao/myimathhack/issues)!
+**Last working update: Dec 30, 2016** Not working? [Starts a issue now](https://github.com/micromaomao/myimathhack/issues)!
 
 ## Why did I make this?
 
